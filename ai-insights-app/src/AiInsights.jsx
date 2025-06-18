@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
-function AiInsights() {
+function AiInsights({ bankData }) {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
@@ -11,11 +11,24 @@ function AiInsights() {
     setResponse('');
 
     try {
+      // Optional: Use first 5 rows to keep the prompt short
+      const csvSummary = bankData?.length
+        ? bankData
+            .slice(0, 5)
+            .map((row, i) => `${i + 1}. ${JSON.stringify(row)}`)
+            .join('\n')
+        : '';
+
+      const finalPrompt = csvSummary
+        ? `Here is my recent spending data:\n${csvSummary}\n\n${prompt}`
+        : prompt;
+
       const res = await axios.post('http://localhost:11434/api/generate', {
         model: 'tinyllama',
-        prompt: prompt,
-        stream: false
+        prompt: finalPrompt,
+        stream: false,
       });
+
       setResponse(res.data.response);
     } catch (error) {
       console.error(error);
