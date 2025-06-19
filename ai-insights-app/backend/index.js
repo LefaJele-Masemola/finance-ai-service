@@ -19,21 +19,23 @@ app.get('/analyze', async (req, res) => {
 
   stream.on('data', (data) => results.push(data));
   stream.on('end', async () => {
-   const prompt = `
-You are a helpful AI financial assistant. The following is a user's transaction history:
+  const prompt = `
+You are a personal finance analyst AI.
 
+Below is a user's real transaction data for June 2024:
 ${JSON.stringify(results.slice(0, 10), null, 2)}
 
-Give a friendly, human-readable summary that includes:
-1. Total income vs expenses
-2. Where the user is spending the most
-3. 3 personalized budgeting or saving tips
-4. Whether they are overspending, and where
-5. Simple investment advice (based on spending patterns)
-6. Bullet-point summary
+🔍 Analyze this and return ONLY the following insights:
+1. Total income vs total expenses (as numbers)
+2. Which category had the highest spending?
+3. 3 budgeting or saving tips based on their habits
+4. One practical investment suggestion
+5. Final bullet-point summary
 
-⚠️ Don't include or repeat the transaction list. Just respond with insights.
+⚠️ DO NOT retell the transactions or list them out.
+✅ Focus only on insights and advice.
 `;
+
 
 
     try {
