@@ -9,9 +9,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const upload = multer({ dest: 'upload/' });
+// Ensure upload directory exists
+const uploadDir = 'upload/';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+const upload = multer({ dest: uploadDir });
 
 app.post('/upload', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded.' });
+  }
   const results = [];
   const filePath = req.file.path;
 
@@ -41,5 +49,9 @@ Give a summary of their spending habits, saving advice, and possible investment 
       }
     });
 });
+app.get('/', (req, res) => {
+  res.send('✅ Backend is running!');
+});
+
 
 app.listen(5001, () => console.log('🚀 Backend running on http://localhost:5001'));
