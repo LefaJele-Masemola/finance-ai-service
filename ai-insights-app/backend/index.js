@@ -57,4 +57,4 @@ ${JSON.stringify(results.slice(0, 10), null, 2)}
   });
 });
 
-app.listen(5001, () => console.log('🔥 Server running at http://localhost:5001'));
+app.listen(5001, () => console.log('🔥 Server running at http://0.0.0.0:5001'));
