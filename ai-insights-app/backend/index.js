@@ -41,7 +41,7 @@ ${JSON.stringify(results.slice(0, 10), null, 2)}
     try {
       const aiRes = await axios.post('http://host.docker.internal:11434/api/generate', {
 
-        model: 'tinyllama',
+        model: 'mistral',
         prompt: prompt,
         stream: false,
       });
